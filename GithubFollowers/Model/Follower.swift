@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Follower: Codable{
+struct Follower: Codable, Hashable{
     // make login optional if there is a chance that it will be null
     // in this case it will not be null
     var login: String
