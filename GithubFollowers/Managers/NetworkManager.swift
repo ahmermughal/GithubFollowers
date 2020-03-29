@@ -59,4 +59,47 @@ class NetworkManager{
         
     }
     
+    func getUserInfo(for username: String, completed: @escaping (Result<User, GFError>) -> Void){
+        let endpoint = baseURL + "\(username)"
+        
+        guard let url = URL(string: endpoint) else{
+            // if we have a bad url then we return the error
+            completed(.failure(.invalidUsername))
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            // if error is not null
+            if let _ = error{
+                completed(.failure(.unableToComplete))
+                return
+            }
+            
+            // if this response is not nill and the status code is 200
+            // else response is nill
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else{
+                completed(.failure(.unableToComplete))
+                return
+            }
+            
+            guard let data = data else {
+                completed(.failure(.invalidData))
+                return
+            }
+            
+            do{
+                let decoder = JSONDecoder()
+                decoder.keyDecodingStrategy = .convertFromSnakeCase
+                let user = try decoder.decode(User.self, from: data)
+                completed(.success(user))
+            }catch{
+                completed(.failure(.invalidData))
+            }
+        }
+        
+        // task.resume() starts the network call IMPORTANT TO ADD
+        task.resume()
+        
+    }
+    
 }

@@ -20,6 +20,9 @@ class FollowerListVC: UIViewController {
     var page = 1
     var hasMoreFollowers = true
     
+    // isSearching variable is to know which arrey to get the user from. Filtered or normal
+    var isSearching = false
+    
     var collectionView : UICollectionView!
     var dataSource: UICollectionViewDiffableDataSource<Section, Follower>!
     
@@ -130,8 +133,15 @@ extension FollowerListVC: UICollectionViewDelegate{
         }
     }
     
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let follower = followers[indexPath.item]
+        let activeArray = isSearching ? filteredFollowers : followers
+        let follower = activeArray[indexPath.item]
+        let destVC = UserInfoVC()
+        destVC.username = follower.login
+        let navController = UINavigationController(rootViewController: destVC)
+        present(navController, animated: true)
+        
     }
     
 }
@@ -141,11 +151,14 @@ extension FollowerListVC: UISearchResultsUpdating, UISearchBarDelegate{
         // check is text is nil or is empty string and returns otherwise
         // adds the string to filter variable
         guard let filter = searchController.searchBar.text, !filter.isEmpty else{return}
+        isSearching = true
         // checks login contains the filered word for each follower
         filteredFollowers = followers.filter{$0.login.lowercased().contains(filter.lowercased())}
         updateData(on: filteredFollowers)
     }
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        isSearching = false
         updateData(on: followers)
+        
     }
 }
