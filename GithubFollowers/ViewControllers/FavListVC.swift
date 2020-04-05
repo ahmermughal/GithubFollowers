@@ -13,5 +13,13 @@ class FavListVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemTeal
+        PersistanceManager.retrieveFavorites { (resut) in
+            switch resut{
+            case .success(let fav):
+                print(fav)
+            case .failure(let error):
+               break
+            }
+        }
     }
 }

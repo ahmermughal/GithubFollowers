@@ -15,6 +15,7 @@ class GFItemInfoVC: UIViewController {
     let itemInfoViewTwo = GFItemInfoView()
     let actionButton = GFButton()
     
+    weak var delegate: UserInfoVCDelegate!
     var user: User!
     
     override func viewDidLoad() {
@@ -22,6 +23,7 @@ class GFItemInfoVC: UIViewController {
         configureBackgroundView()
         layoutUI()
         configureStackView()
+        configureActionButton()
     }
     
     init(user: User) {
@@ -48,6 +50,14 @@ class GFItemInfoVC: UIViewController {
         stackView.addArrangedSubview(itemInfoViewTwo)
     }
     
+    private func configureActionButton(){
+        actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
+    }
+    
+    
+    @objc func actionButtonTapped(){
+    }
+    
     private func layoutUI(){
         view.addSubview(stackView)
         view.addSubview(actionButton)
@@ -68,4 +78,5 @@ class GFItemInfoVC: UIViewController {
             actionButton.heightAnchor.constraint(equalToConstant: 44)
         ])
     }
+    
 }
