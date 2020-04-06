@@ -28,7 +28,7 @@ class GFUserInfoHeaderVC: UIViewController {
         bioLabel.text = user.bio ?? "No Bio."
         bioLabel.numberOfLines = 3
         downloadAvatarImage()
-        locationImageView.image = UIImage(systemName: SFSymbols.location)
+        locationImageView.image = SFSymbols.location
         locationImageView.tintColor = .secondaryLabel
         
     }
