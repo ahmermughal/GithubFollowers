@@ -13,7 +13,7 @@ protocol UserInfoVCDelegate: class {
     func didTapGetFollowers(for user: User)
 }
 
-class UserInfoVC: UIViewController {
+class UserInfoVC: GFDataLoadingViewController {
     
     var username: String!
     let itemViewOne = UIView()
@@ -62,7 +62,7 @@ class UserInfoVC: UIViewController {
         self.add(childVC: repoItemVC , to: self.itemViewOne)
         self.add(childVC: followerItemVC, to: self.itemViewTwo)
         // created two extension to 1st convert string to formatted date then convert date to the string format we need to display
-        self.dateLabel.text = " Github since \( user.createdAt.convertToDisplayFormat())"
+        self.dateLabel.text = " Github since \( user.createdAt.convertToMonthYear())"
     }
     
     func layoutUI(){

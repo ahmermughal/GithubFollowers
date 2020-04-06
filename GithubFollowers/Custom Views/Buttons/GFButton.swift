@@ -19,11 +19,12 @@ class GFButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
  
-    init(backgroundColor: UIColor, title: String){
-        super.init(frame: .zero)
+    // using convenicne we dnt have to call configure here
+    // see video optimization 2 to understand more if forgot
+    convenience init(backgroundColor: UIColor, title: String){
+        self.init(frame: .zero)
         self.backgroundColor = backgroundColor
         self.setTitle(title, for: .normal)
-        configure()
     }
     
     private func configure(){

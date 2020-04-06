@@ -9,6 +9,10 @@
 import Foundation
 
 extension String {
+    // UPDATE
+    // Not needed after changing model to Date and adding decoding
+    // date Statergy
+    
     // converts String recieved from server to date object
     func convertToDate() ->Date?{
         let dateFormatter = DateFormatter()

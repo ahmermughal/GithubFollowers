@@ -18,10 +18,11 @@ class GFBodyLabel: UILabel {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(textAlignment: NSTextAlignment) { // no font size cuz use dynamic type (resizes according to system font size)
-        super.init(frame: .zero)
+    // using convenicne we dnt have to call configure here
+    // see video optimization 2 to understand more if forgot
+    convenience init(textAlignment: NSTextAlignment) { // no font size cuz use dynamic type (resizes according to system font size)
+        self.init(frame: .zero)
         self.textAlignment = textAlignment
-        configure()
     }
     private func configure(){
         textColor = .secondaryLabel // (secondary) black color on white screen & white on black screen

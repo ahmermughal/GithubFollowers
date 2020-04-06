@@ -90,6 +90,7 @@ class NetworkManager{
             do{
                 let decoder = JSONDecoder()
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
+                decoder.dateDecodingStrategy = .iso8601
                 let user = try decoder.decode(User.self, from: data)
                 completed(.success(user))
             }catch{
@@ -102,4 +103,39 @@ class NetworkManager{
         
     }
     
+    func downloadImage(from urlString: String, completed: @escaping (UIImage?) -> Void){
+        // making urlString into NSString
+        let cacheKey = NSString(string: urlString)
+        // checking to see if cached image exsists.
+        if let image = cache.object(forKey: cacheKey) {
+            completed(image)
+            return
+        }
+        
+        guard let url = URL(string: urlString) else{
+            completed(nil)
+            return
+        }
+        // making the network call
+        let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+            // handling all the errors
+            guard let self = self,
+                error == nil,
+                let response = response as? HTTPURLResponse, response.statusCode == 200,
+                let data = data,
+                let image = UIImage(data: data)
+            else {
+                completed(nil)
+                return
+            }
+            
+            // caching the downloaded image
+            self.cache.setObject(image, forKey: cacheKey)
+            // setting the image on the main thread
+            completed(image)
+        }
+        task.resume()
+    }
 }
+
+

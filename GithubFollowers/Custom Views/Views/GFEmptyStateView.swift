@@ -22,10 +22,11 @@ class GFEmptyStateView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(message: String){
-        super.init(frame: .zero)
+    // using convenicne we dnt have to call configure here
+    // see video optimization 2 to understand more if forgot
+    convenience init(message: String){
+        self.init(frame: .zero)
         messageLabel.text = message
-        configure()
     }
     
     private func configure(){

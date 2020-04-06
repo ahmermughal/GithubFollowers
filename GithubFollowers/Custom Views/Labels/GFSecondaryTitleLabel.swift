@@ -17,11 +17,11 @@ class GFSecondaryTitleLabel: UILabel {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    init(fontSize: CGFloat) { // no font size cuz use dynamic type (resizes according to system font size)
-        super.init(frame: .zero)
+    // using convenicne we dnt have to call configure here
+    // see video optimization 2 to understand more if forgot
+    convenience init(fontSize: CGFloat) { // no font size cuz use dynamic type (resizes according to system font size)
+        self.init(frame: .zero)
         font = UIFont.systemFont(ofSize: fontSize, weight: .medium)
-        configure()
     }
     private func configure(){
         textColor = .secondaryLabel // (secondary) black color on white screen & white on black screen
