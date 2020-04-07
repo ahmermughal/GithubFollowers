@@ -11,9 +11,8 @@ import UIKit
 class SearchVC: UIViewController {
     let logoImageView = UIImageView()
     let usernameTextField = GFTextField()
-    var logoImageViewTopConstraint : NSLayoutConstraint!
     let callToActionButton = GFButton(backgroundColor: .systemGreen, title: "Get Followers")
-    
+
     var isUsernameEntered: Bool{
         return !usernameTextField.text!.isEmpty
     }
@@ -54,13 +53,10 @@ class SearchVC: UIViewController {
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
         logoImageView.image = Images.ghLogo
         
-        let topConstraintConstant: CGFloat = DeviceTypes.isiPhoneSE || DeviceTypes.isiPhone8Zoomed ? 20 : 80
-        
-        logoImageViewTopConstraint = logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: topConstraintConstant)
-        
-        logoImageViewTopConstraint.isActive = true
-        
+        let topConstraintConstant: CGFloat = DeviceTypes.isiPhoneSE || DeviceTypes.isiPhone8Zoomed ? 20 : 80        
+    
         NSLayoutConstraint.activate([
+            logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: topConstraintConstant),
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             logoImageView.heightAnchor.constraint(equalToConstant: 200),
             logoImageView.widthAnchor.constraint(equalToConstant: 200)
@@ -69,7 +65,6 @@ class SearchVC: UIViewController {
     
     func configureTextField(){
         //TODO - REMOVE TEXT
-        self.usernameTextField.text = "SAllen0400"
         usernameTextField.delegate = self
         NSLayoutConstraint.activate([
             usernameTextField.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 48),
@@ -81,6 +76,7 @@ class SearchVC: UIViewController {
     
     func configureCallToActionButton(){
         callToActionButton.addTarget(self, action: #selector(pushFollowerListVC), for: .touchUpInside)
+        callToActionButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             callToActionButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
             callToActionButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),

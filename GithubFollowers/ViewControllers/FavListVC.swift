@@ -40,23 +40,13 @@ class FavListVC: GFDataLoadingViewController {
         tableView.register(TableViewCell.self, forCellReuseIdentifier: TableViewCell.reuseID)
         
     }
-    
+
     func getFavorites(){
         PersistanceManager.retrieveFavorites { [weak self] result in
             guard let self = self else{return}
             switch result{
             case .success(let fav):
-                if fav.isEmpty{
-                    self.showEmptyStateView(with: "No Favorites?\nAdd one on the follower screen", in: self.view)
-                }else{
-                    self.favorites = fav
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                        // if emptystate was called first then
-                        // bring tableview to front
-                        self.view.bringSubviewToFront(self.tableView)
-                    }
-                }
+                self.updateUI(with: fav)
                 
             case .failure(let error):
                 self.presentGFAlertOnMainThread(title: "Something went wrong", message: error.rawValue, buttonTitle: "OK")
@@ -64,7 +54,24 @@ class FavListVC: GFDataLoadingViewController {
             }
         }
     }
+    
+    func updateUI(with fav: ([Follower])) {
+        if fav.isEmpty{
+            self.showEmptyStateView(with: "No Favorites?\nAdd one on the follower screen", in: self.view)
+        }else{
+            self.favorites = fav
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+                // if emptystate was called first then
+                // bring tableview to front
+                self.view.bringSubviewToFront(self.tableView)
+            }
+        }
+    }
 }
+ 
+
+ 
 
 extension FavListVC : UITableViewDataSource, UITableViewDelegate{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
