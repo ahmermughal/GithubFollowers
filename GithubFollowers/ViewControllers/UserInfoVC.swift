@@ -9,9 +9,9 @@
 import UIKit
 
 protocol UserInfoVCDelegate: class {
-    func didTapGitHubProfile(for user: User)
-    func didTapGetFollowers(for user: User)
+    func didReuqestFollowers(for username: String)
 }
+
 
 class UserInfoVC: GFDataLoadingViewController {
     
@@ -21,7 +21,7 @@ class UserInfoVC: GFDataLoadingViewController {
     let headerView = UIView()
     var itemViews: [UIView] = []
     let dateLabel = GFBodyLabel(textAlignment: .center)
-    weak var delegate : FollowerListVCDelegate!
+    weak var delegate : UserInfoVCDelegate!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,18 +49,11 @@ class UserInfoVC: GFDataLoadingViewController {
         }
     }
     
-    func configureUIElements(with user: User){
-        
-        let repoItemVC = GFRepoItemVC(user: user)
-        repoItemVC.delegate = self
-        
-        let followerItemVC = GFFollowerItemVC(user: user)
-        followerItemVC.delegate = self
-        
+    func configureUIElements(with user: User){ 
         // adding user to GFUserInfoHeaderVC and creating that VC
         self.add(childVC: GFUserInfoHeaderVC(user: user), to: self.headerView)
-        self.add(childVC: repoItemVC , to: self.itemViewOne)
-        self.add(childVC: followerItemVC, to: self.itemViewTwo)
+        self.add(childVC: GFRepoItemVC(user: user, delegate: self), to: self.itemViewOne)
+        self.add(childVC: GFFollowerItemVC(user: user, delegate: self), to: self.itemViewTwo)
         // created two extension to 1st convert string to formatted date then convert date to the string format we need to display
         self.dateLabel.text = " Github since \( user.createdAt.convertToMonthYear())"
     }
@@ -77,10 +70,10 @@ class UserInfoVC: GFDataLoadingViewController {
                 itemView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
             ])
         }
-
+        
         NSLayoutConstraint.activate([
             headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: 180),
+            headerView.heightAnchor.constraint(equalToConstant: 210),
             
             itemViewOne.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: padding),
             itemViewOne.heightAnchor.constraint(equalToConstant: itemHeight),
@@ -89,7 +82,7 @@ class UserInfoVC: GFDataLoadingViewController {
             itemViewTwo.heightAnchor.constraint(equalToConstant: itemHeight),
             
             dateLabel.topAnchor.constraint(equalTo: itemViewTwo.bottomAnchor, constant: padding),
-            dateLabel.heightAnchor.constraint(equalToConstant: 18)
+            dateLabel.heightAnchor.constraint(equalToConstant: 50)
             
         ])
     }
@@ -107,16 +100,19 @@ class UserInfoVC: GFDataLoadingViewController {
     
 }
 
-extension UserInfoVC: UserInfoVCDelegate {
+extension UserInfoVC: GFRepoItemVCDelegate{
     func didTapGitHubProfile(for user: User) {
         guard let url = URL(string: user.htmlUrl) else{
             presentGFAlertOnMainThread(title: "Invalid URL", message: "The url attached to this user is invalid", buttonTitle: "Ok")
             return
         }
-       presentSafariVC(with: url)
-        
+        presentSafariVC(with: url)
     }
     
+    
+}
+
+extension UserInfoVC: GFFollowerItemVCDelegate{
     func didTapGetFollowers(for user: User) {
         // check if user has zero followers then dnt delegate
         guard user.followers != 0 else {
@@ -126,5 +122,5 @@ extension UserInfoVC: UserInfoVCDelegate {
         delegate.didReuqestFollowers(for: user.login)
         dismissVC()
     }
-    
 }
+

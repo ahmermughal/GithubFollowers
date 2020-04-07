@@ -27,7 +27,8 @@ class GFBodyLabel: UILabel {
     private func configure(){
         textColor = .secondaryLabel // (secondary) black color on white screen & white on black screen
         
-        font = UIFont.preferredFont(forTextStyle: .body) // we get dynamic type font
+        font = UIFont.preferredFont(forTextStyle: .body)
+        adjustsFontForContentSizeCategory = true// we get dynamic type font
         
         adjustsFontSizeToFitWidth = true // if text becomes to big then resize it
         minimumScaleFactor = 0.75 // resize 90%
