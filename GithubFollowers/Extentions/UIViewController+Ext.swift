@@ -8,7 +8,6 @@
 
 import UIKit
 import SafariServices
-// fileprivate is private to this particule file
 
 extension UIViewController{
     func presentGFAlertOnMainThread(title: String, message: String, buttonTitle: String){

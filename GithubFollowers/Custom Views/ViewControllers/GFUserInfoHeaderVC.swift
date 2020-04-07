@@ -10,7 +10,7 @@ import UIKit
 import SwiftUI
 // this class takes a user as input and sets the user's details to the image and text views
 class GFUserInfoHeaderVC: UIViewController {
-
+    
     let avatarImageView = GFAvatarImageView(frame: .zero)
     
     let usernameLabel = GFTitleLabel(textAlignment: .left, fontSize: 34)
@@ -21,27 +21,6 @@ class GFUserInfoHeaderVC: UIViewController {
     
     var user: User!
     
-    func configureUIElements(){
-        usernameLabel.text = user.login
-        nameLabel.text = user.name ?? ""
-        locationLabel.text = user.location ?? "No Location"
-        bioLabel.text = user.bio ?? "No Bio."
-        bioLabel.numberOfLines = 3
-        downloadAvatarImage()
-        locationImageView.image = SFSymbols.location
-        locationImageView.tintColor = .secondaryLabel
-        
-    }
-    
-    func downloadAvatarImage(){
-        NetworkManager.shared.downloadImage(from: user.avatarUrl) { [weak self] image in
-            guard let self = self else{return}
-            DispatchQueue.main.async {
-                self.avatarImageView.image = image
-            }
-        }
-    }    
-
     init(user: User) {
         super.init(nibName: nil, bundle: nil)
         self.user = user
@@ -53,19 +32,27 @@ class GFUserInfoHeaderVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        addSubViews()
+        view.addSubviews(avatarImageView, usernameLabel, nameLabel, locationImageView, locationLabel, bioLabel)
         layoutUI()
         configureUIElements()
     }
     
-    func addSubViews(){
-        view.addSubviews(avatarImageView, usernameLabel, nameLabel, locationImageView, locationLabel, bioLabel)
+    func configureUIElements(){
+        usernameLabel.text = user.login
+        nameLabel.text = user.name ?? ""
+        locationLabel.text = user.location ?? "No Location"
+        bioLabel.text = user.bio ?? "No Bio."
+        bioLabel.numberOfLines = 3
+        avatarImageView.downloadImage(fromURL: user.avatarUrl)
+        locationImageView.image = SFSymbols.location
+        locationImageView.tintColor = .secondaryLabel
     }
     
     func layoutUI(){
         let padding: CGFloat = 20
         let textImagePadding: CGFloat = 12
         locationImageView.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             avatarImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: padding),
             avatarImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -98,6 +85,4 @@ class GFUserInfoHeaderVC: UIViewController {
             bioLabel.heightAnchor.constraint(equalToConstant: 90)
         ])
     }
-    
-    
 }

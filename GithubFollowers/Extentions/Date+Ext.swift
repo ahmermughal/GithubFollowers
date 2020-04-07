@@ -16,6 +16,4 @@ extension Date{
         dateFormatter.dateFormat = "d MMM yyyy"
         return dateFormatter.string(from: self)
     }
-    
-    
 }

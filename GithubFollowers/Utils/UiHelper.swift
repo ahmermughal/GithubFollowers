@@ -17,9 +17,7 @@ struct UiHelper {
         let itemWidth = availableWidth / 3 // available width is divided by 3 becuase of 3 columns which gives width of 1 item
         
         let flowLayout = UICollectionViewFlowLayout()
-        
         flowLayout.sectionInset = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
-        
         flowLayout.itemSize = CGSize(width: itemWidth, height: itemWidth + 40 )
         
         return flowLayout

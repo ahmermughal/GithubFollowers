@@ -24,6 +24,7 @@ class GFTitleLabel: UILabel {
         self.textAlignment = textAlignment
         self.font = UIFont.systemFont(ofSize: fontSize, weight: .bold)
     }
+    
     private func configure(){
         textColor = .label // black color on white screen & white on black screen
         adjustsFontSizeToFitWidth = true // if text becomes to big then resize it

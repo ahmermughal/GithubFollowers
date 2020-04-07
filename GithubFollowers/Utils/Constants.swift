@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 enum SFSymbols{
     static let location = UIImage(systemName:"mappin.and.ellipse")
     static let repos = UIImage(systemName:"folder")
