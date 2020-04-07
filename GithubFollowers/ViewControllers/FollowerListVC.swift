@@ -56,7 +56,17 @@ class FollowerListVC: GFDataLoadingViewController {
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
-        navigationItem.rightBarButtonItem = addButton
+        let profileButton = UIBarButtonItem(image: UIImage(named: "user-icon"), style: .done, target: self, action: #selector(profileButtonTapped))
+        navigationItem.rightBarButtonItems = [addButton, profileButton]
+    }
+    
+    @objc func profileButtonTapped(){
+        let destVC = UserInfoVC()
+        destVC.delegate = self
+        
+        destVC.username = username
+        let navController = UINavigationController(rootViewController: destVC)
+        present(navController, animated: true)
     }
     
     @objc func addButtonTapped(){
